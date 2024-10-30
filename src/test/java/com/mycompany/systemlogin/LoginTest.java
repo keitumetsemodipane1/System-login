@@ -77,7 +77,7 @@ public class LoginTest {
         instance.setlastName("fahima");//Set the lastname
         instance.setUserName("kyl_1");// Set the password
         instance.setPassWord("Ch&&sec@ke99!");//Set vail password
-        String expResult = "Username and password  correctly formatted the user has successfully logged in";
+        String expResult = "Username and password successfully captured";
         String result = instance.registerUser();
         assertEquals(expResult, result);
         
@@ -100,5 +100,5 @@ public class LoginTest {
 
    
 
-    
+   
 }
