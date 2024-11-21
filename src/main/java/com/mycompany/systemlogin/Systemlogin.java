@@ -13,7 +13,7 @@ import javax.swing.*;
 public class Systemlogin {
 
     public static void main(String[] args) {
-        //login intance ogf the login 
+        //login intance of the login 
         Login user= new Login();   
         String registrationMessage;
                
@@ -35,7 +35,8 @@ public class Systemlogin {
         System.out.println("Please enter your lastname");        
         String lastName=sc.nextLine();
         user.setlastName(lastName);//Sets the lastname
-        
+               
+      // Username validation loop
         String tempUsername;
      do { 
        System.out.println("Please enter your username ");
@@ -44,7 +45,7 @@ public class Systemlogin {
         } 
      while (!user.CheckUsername(tempUsername)); // Checks the username
 
-        
+        // Password complexity check loop
        String password;
     do { 
        System.out.println("Please enter your password");
@@ -91,22 +92,29 @@ public class Systemlogin {
     int taskDuration;
     String taskStatus;
     int taskCounter = 1;//tracks the number of tasks
-    
-    JOptionPane.showMessageDialog(null, "Welcome to EasyKanban"); // Welcome message displayed
-    boolean exit = false;//Variable to exit the loop.
-    
-    while (!exit){// Loop until the user chooses to exit
-        String choice = JOptionPane.showInputDialog(
-             "Choose an option:\n1"
-              + " Add tasks\n2)"
-              + " Show all tasks\n3)  " 
-              + "Quit");
-        
-        
-        // Switch cases for user options
-        switch (choice){
-            case"1"://Handle the user's input.
-                 TaskNumber =Integer.parseInt(JOptionPane.showInputDialog("How many tasks would you like to enter?"));
+        boolean exit = false; // Flag to control the loop. Initially set to false to keep the program running
+
+        // Display a welcome message when the application starts
+        JOptionPane.showMessageDialog(null, "Welcome to EasyKanban");
+
+        // Main loop to keep the program running until the user chooses to quit
+        while (!exit) {
+            // Show a menu asking for the user's choice (Add task, Show tasks, or Quit)
+            String choice = JOptionPane.showInputDialog(
+                "Choose an option:\n" +
+                "1) Add task\n" +
+                "2) Show all tasks\n" +
+                "3) Quit\n" +
+                "4) Longest Task\n" +
+                "5) Search by Task Name\n" +
+                "6) Search by Developer\n" +
+                "7) Delete Task\n" +
+                "8) Task Report\n");
+
+            // Switch statement to handle different menu options based on the user's input
+            switch (choice) {
+                case "1": // Add task
+             TaskNumber =Integer.parseInt(JOptionPane.showInputDialog("How many tasks would you like to enter?"));
                 for (int i = 0 ; i < TaskNumber ; i++){
                 taskName=JOptionPane.showInputDialog("Enter a task name");
                
@@ -121,7 +129,7 @@ public class Systemlogin {
            
                  // Loop for valid developer details input
                 while (true) {
-                developerDetails = JOptionPane.showInputDialog( "Enter developer's first and last name:");
+                developerDetails = JOptionPane.showInputDialog( "Enter developer's first name  and last name:");
                 //  Checks for exactly two words separated by a space
                 if (developerDetails.matches("\\S+ \\S+")) {
                 break; // Valid input
@@ -160,33 +168,54 @@ public class Systemlogin {
                         taskList.add(newTask);
                     }
                     break;
-                    
-             // Case for displaying task details
-            case "2":
-                   if (taskList.isEmpty()) {// CheckS if the task list is empty
-                JOptionPane.showMessageDialog(null, "No tasks available.");
-                 } else {
-                 String taskDetails = "Tasks:\n"; // Initialize  string to hold task details
-                 for (Task task : taskList) {
-                 taskDetails += task.printTaskDetails() + "\n";
-             }
-                JOptionPane.showMessageDialog(null, taskDetails); // Show the dialog here
-             }
-
-                    break;
-            case "3": // Case for calculating and displaying total task hours
-                    int totalHours = Task.returnTotalHours(taskList); //Calculates  total hours from the task list
-                    JOptionPane.showMessageDialog(dialog, "Total hours: " + totalHours);
-                    exit = true; // Exit the loop
+                case "2": // Show all tasks
+                    // Display a dialog with all the tasks using the Task class's showAllTasks method
+                    JOptionPane.showMessageDialog(null, Task.showAllTasks());
                     break;
 
-                default: //  invalid option
-                    JOptionPane.showMessageDialog(dialog, "Invalid option, please try again.");
+                case "3": // Quit the program
+                    exit = true; // This will break out of the loop and return from the current method
+                    break;
+
+                case "4": // display the longest task
+                    // Call the Task class's getLongestTask method and display the result in a dialog
+                    JOptionPane.showMessageDialog(null, Task.getLongestTask());
+                    break;
+
+                case "5": // Search for a task by its name
+                    // Prompt the user to input the task name they wish to search for
+                    String taskNameToSearch = JOptionPane.showInputDialog("Enter task name to search:");
+                    // Display the search result using the Task class's searchTaskByName method
+                    JOptionPane.showMessageDialog(null, Task.searchTaskByName(taskNameToSearch));
+                    break;
+
+                case "6": // Search tasks by the developer's name
+                    // Prompt the user to input the developer's name
+                    String developerNameToSearch = JOptionPane.showInputDialog("Enter developer name to search:");
+                    // Display the search result using the Task class's searchTasksByDeveloper method
+                    JOptionPane.showMessageDialog(null, Task.searchTasksByDeveloper(developerNameToSearch));
+                    break;
+
+                case "7": // Delete a task by its name
+                    // Prompt the user to input the name of the task they wish to delete
+                    String taskNameToDelete = JOptionPane.showInputDialog("Enter task name to delete:");
+                    // Show the result of deleting the task using the Task class's deleteTaskByName method
+                    JOptionPane.showMessageDialog(null, Task.deleteTaskByName(taskNameToDelete));
+                    break;
+
+                case "8": // Display a full report of all tasks
+                    // Show the task report generated by the Task class's TaskReport method
+                    JOptionPane.showMessageDialog(null, Task.TaskReport());
+                    break;
+
+                default: // Handle invalid menu options
+                    // Display a message dialog informing the user of an invalid option
+                    JOptionPane.showMessageDialog(dialog, "Invalid option. Please try again.");
                     break;
             }
         }
 
-        dialog.dispose(); // Dispose of the dialog when done
-        sc.close(); // Close the scanner
+       // Close the dialog when the program quits
+        dialog.dispose();
     }
 }
